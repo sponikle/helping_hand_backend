@@ -49,20 +49,24 @@ router.post('/addCommentToHelp', [
 router.post('/addService', [
     body('type').notEmpty().withMessage("type cannot be empty"),
     body('offered_by').notEmpty().withMessage("offered_by cannot be empty"),
-    body('offered_location').notEmpty().withMessage("type cannot be empty"),
-    body('offered_district').notEmpty().withMessage("type cannot be empty"),
-    body('offered_state').notEmpty().withMessage("type cannot be empty"),
-    body('offered_link').notEmpty().withMessage("type cannot be empty"),
-    body('offered_area').notEmpty().withMessage("type cannot be empty"),
-    body('chargable').notEmpty().withMessage("type cannot be empty"),
-    body('operation_time').notEmpty().withMessage("type cannot be empty"),
-    body('contact_number').notEmpty().withMessage("type cannot be empty"),
-    body('contact_person').notEmpty().withMessage("type cannot be empty")
+    body('offered_location').notEmpty().withMessage("offered_location cannot be empty"),
+    body('offered_district').notEmpty().withMessage("offered_district cannot be empty"),
+    body('offered_state').notEmpty().withMessage("offered_state cannot be empty"),
+    body('offered_area').notEmpty().withMessage("offered_area cannot be empty"),
+    body('chargable').notEmpty().withMessage("chargable cannot be empty"),
+    body('operation_time').notEmpty().withMessage("operation_time cannot be empty"),
+    body('contact_number').notEmpty().withMessage("contact_number cannot be empty"),
+    body('contact_person').notEmpty().withMessage("contact_person cannot be empty")
 ], controller.addService);
 
 router.post('/fetchService', [
     body('param').notEmpty().withMessage("param can not be empty")
 ], controller.fetchService);
 
+router.post('/addSuggestions', [
+    body('name').notEmpty().withMessage('Name can not be empty'),
+    body('email').notEmpty().withMessage('email can not be empty'),
+    body('suggestion').notEmpty().withMessage('suggestion can not be empty')
+], controller.addSuggestion);
 
 module.exports = router;
