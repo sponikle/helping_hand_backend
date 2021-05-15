@@ -6,6 +6,11 @@ const helpSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
+    type: {
+        type: String,
+        trim: true,
+        required: true
+    },
     address: {
         type: String,
         trim: true,
@@ -35,6 +40,11 @@ const helpSchema = new mongoose.Schema({
         required: true
     },
     state: {
+        type: String,
+        trim: true,
+        required: true
+    },
+    token: {
         type: String,
         trim: true,
         required: true

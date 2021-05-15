@@ -1,3 +1,4 @@
+const { request } = require('express');
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
@@ -8,17 +9,60 @@ router.post('/getStores', [
     body('district').notEmpty().withMessage("district can not be empty")
 ], controller.getStores);
 router.post('/setStore', [
-    body('type').notEmpty().withMessage("district can not be empty"),
-    body('store_name').notEmpty().withMessage("district can not be empty"),
-    body('store_location').notEmpty().withMessage("district can not be empty"),
-    body('store_district').notEmpty().withMessage("district can not be empty"),
-    body('store_link').notEmpty().withMessage("district can not be empty"),
-    body('store_area').notEmpty().withMessage("district can not be empty"),
-    body('store_state').notEmpty().withMessage("district can not be empty"),
-    body('pickup').notEmpty().withMessage("district can not be empty"),
-    body('operation_time').notEmpty().withMessage("district can not be empty"),
-    body('homedelivery').notEmpty().withMessage("district can not be empty"),
-    body('contact_number').notEmpty().withMessage("district can not be empty"),
+    body('type').notEmpty().withMessage("type can not be empty"),
+    body('store_name').notEmpty().withMessage("store_name can not be empty"),
+    body('store_location').notEmpty().withMessage("store_location can not be empty"),
+    body('store_district').notEmpty().withMessage("store_district can not be empty"),
+    body('store_area').notEmpty().withMessage("store_area can not be empty"),
+    body('store_state').notEmpty().withMessage("store_state can not be empty"),
+    body('pickup').notEmpty().withMessage("pickup can not be empty"),
+    body('operation_time').notEmpty().withMessage("operation_time can not be empty"),
+    body('homedelivery').notEmpty().withMessage("homedelivery can not be empty"),
+    body('contact_number').notEmpty().withMessage("contact_number can not be empty"),
 ], controller.setStore);
+
+router.post('/requestHelp', [
+    body('_priority').notEmpty().withMessage("_priority can not be empty"),
+    body('address').notEmpty().withMessage("address can not be empty"),
+    body('description').notEmpty().withMessage("description can not be empty"),
+    body('district').notEmpty().withMessage("district can not be empty"),
+    body('name').notEmpty().withMessage("name can not be empty"),
+    body('number').notEmpty().withMessage("number can not be empty"),
+    body('request_type').notEmpty().withMessage("request_type can not be empty"),
+    body('state').notEmpty().withMessage("state can not be empty"),
+    body('type').notEmpty().withMessage("type can not be empty")
+], controller.requestHelp);
+
+router.post('/fetchHelp', [
+    body('param').notEmpty().withMessage("param can not be empty")
+], controller.fetchHelps);
+
+router.post('/fetchHelpById', [
+    body('id').notEmpty().withMessage("Id can not be empty")
+], controller.fetchHelpsById);
+
+router.post('/addCommentToHelp', [
+    body('id').notEmpty().withMessage("Id can not be empty"),
+    body('comment').notEmpty().withMessage("Comment can not be empty")
+], controller.addCommentToHelp);
+
+router.post('/addService', [
+    body('type').notEmpty().withMessage("type cannot be empty"),
+    body('offered_by').notEmpty().withMessage("offered_by cannot be empty"),
+    body('offered_location').notEmpty().withMessage("type cannot be empty"),
+    body('offered_district').notEmpty().withMessage("type cannot be empty"),
+    body('offered_state').notEmpty().withMessage("type cannot be empty"),
+    body('offered_link').notEmpty().withMessage("type cannot be empty"),
+    body('offered_area').notEmpty().withMessage("type cannot be empty"),
+    body('chargable').notEmpty().withMessage("type cannot be empty"),
+    body('operation_time').notEmpty().withMessage("type cannot be empty"),
+    body('contact_number').notEmpty().withMessage("type cannot be empty"),
+    body('contact_person').notEmpty().withMessage("type cannot be empty")
+], controller.addService);
+
+router.post('/fetchService', [
+    body('param').notEmpty().withMessage("param can not be empty")
+], controller.fetchService);
+
 
 module.exports = router;

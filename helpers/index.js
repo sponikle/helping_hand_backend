@@ -6,21 +6,32 @@ exports.setDistrict = async(state, district) => {
     return new Promise((resolve, reject) => {
         try {
             const camcaseState = _this.camcase(state);
-            const allState = State.findOne({ name: camcaseState });
-            const camcaseDis = _this.camcase(district);
-            const dist = allState.find(dis => district.name === camcaseDis)
+            const allState = State.findOne({ name: camcaseState }, (err, result) => {
+                if (err) {
+                    console.log(err)
+                }
+                if (result) {
+                    console.log(result.districts)
+                    const camcaseDis = _this.camcase(district);
 
-            if (!dist) {
-                const distr = { name: camcaseDis }
-                allState.push(distr)
-                State.findOneAndUpdate({ name: camcaseState }, { districts: allState })
-                    .then(() => {
-                        resolve('District Updated')
-                    })
-                    .catch(() => {
-                        reject("Error while updating district");
-                    })
-            }
+                    let foundDis = result.districts.find(dis => dis.name === camcaseDis);
+                    if (!foundDis) {
+                        let listDistricts = result.districts
+                        const distr = { name: camcaseDis }
+                        listDistricts.push(distr)
+                        State.findOneAndUpdate({ name: camcaseState }, { districts: listDistricts })
+                            .then(() => {
+                                resolve('District Updated')
+                            })
+                            .catch(() => {
+                                reject("Error while updating district");
+                            })
+                    } else {
+                        resolve('District is present')
+                    }
+
+                }
+            })
         } catch (e) {
             reject(e)
         }
@@ -42,7 +53,7 @@ exports.setState = (state) => {
                     console.log(err);
                     reject(err)
                 }
-                if (docs.length != 0) {
+                if (docs.length === 0) {
                     console.log('Adding state');
                     let addstate = new State({
                         name: camState
@@ -50,16 +61,19 @@ exports.setState = (state) => {
                     addstate.save((err, result) => {
                         if (err) {
                             console.log('1', err)
-                            reject(e)
+                            reject(err)
                         }
                         if (result) {
                             console.log('res', result)
                             resolve(result)
-
                         }
                     })
                 } else {
-                    reject("State is present")
+                    let ooo = {
+                        status: 302,
+                        msg: 'State is present'
+                    }
+                    reject(ooo);
                 }
             })
         } catch (e) {

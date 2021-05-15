@@ -21,6 +21,11 @@ const serviceSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
+    offered_state: {
+        type: String,
+        trim: true,
+        required: true
+    },
     offered_link: {
         type: String,
         trim: true
