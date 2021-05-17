@@ -4,7 +4,10 @@ const router = express.Router();
 const { body } = require('express-validator');
 const controller = require('../controllers/ctrlr');
 
-
+router.post('/getStates', controller.getStates);
+router.post('/getDistricts', [
+    body('state').notEmpty().withMessage("state can not be empty")
+], controller.getDistricts);
 router.post('/getStores', [
     body('district').notEmpty().withMessage("district can not be empty")
 ], controller.getStores);

@@ -4,8 +4,53 @@ const randomstring = require("randomstring");
 const Store = require('../models/stores');
 const Help = require('../models/help');
 const Service = require('../models/service');
+const State = require('../models/state');
 
 const { setState, setDistrict } = require('../helpers/index');
+
+exports.getStates = async(req, res) => {
+    try {
+        State.find()
+            .then((states) => {
+                if (states.length == 0) {
+                    return res.status(200).json({ message: "No states available" })
+                }
+                return res.status(200).json({ message: states })
+            })
+            .catch((err) => {
+                return res.status(500).json({ message: "err", err: err });
+            })
+    } catch (e) {
+        return res.status(500).json({ message: "err", err: e });
+    }
+}
+
+exports.getDistricts = async(req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json({
+            status: 0,
+            message: "Incomplete Request Data",
+            errors: errors.array(),
+        });
+    }
+    try {
+        State.find({ name: req.body.state }, (err, result) => {
+            if (err) {
+                return res.status(500).json({ message: "err", err: err });
+            }
+            console.log(result[0].districts);
+            if (!result[0].districts) {
+                return res.status(200).json({ message: "No district available" })
+            }
+            return res.status(200).json({ message: result[0].districts })
+
+        })
+    } catch (e) {
+        return res.status(500).json({ message: "err", err: e });
+    }
+}
+
 
 exports.getStores = async(req, res) => {
     const errors = validationResult(req);
