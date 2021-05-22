@@ -190,7 +190,7 @@ exports.setStore = async(req, res) => {
 }
 
 exports.requestHelp = async(req, res) => {
-    const errors = validationResult(req);
+    let errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.json({
             status: 0,
@@ -200,7 +200,7 @@ exports.requestHelp = async(req, res) => {
     }
     return new Promise((resolve, reject) => {
         try {
-            const { _priority, address, description, district, name, number, request_type, state, token } = req.body;
+            let { _priority, address, description, district, name, number, request_type, state, token } = req.body;
 
             if (!token) {
                 token = randomstring.generate(15);
