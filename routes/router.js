@@ -1,4 +1,3 @@
-const { request } = require('express');
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
@@ -35,6 +34,9 @@ router.post('/requestHelp', [
     body('state').notEmpty().withMessage("state can not be empty")
 ], controller.requestHelp);
 
+router.post('/fetchMyHelps', [
+    body('token_list').notEmpty().withMessage("token_list can not be empty")
+], controller.fetchMyHelps);
 router.post('/fetchHelp', [
     body('param').notEmpty().withMessage("param can not be empty")
 ], controller.fetchHelps);

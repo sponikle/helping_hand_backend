@@ -198,47 +198,88 @@ exports.requestHelp = async(req, res) => {
             errors: errors.array(),
         });
     }
-    return new Promise((resolve, reject) => {
-        try {
-            let { _priority, address, description, district, name, number, request_type, state, token } = req.body;
+    try {
+        let { _priority, address, description, district, name, number, request_type, state, token } = req.body;
 
-            if (!token) {
-                token = randomstring.generate(15);
-                console.log(token)
-            }
-
-            const help = new Help({
-                _priority,
-                address,
-                description,
-                district,
-                name,
-                number,
-                request_type,
-                state,
-                token
-            })
-            help.save((err, result) => {
-                if (err) {
-                    return res.status(500).json({
-                        error: err
-                    })
-                }
-                if (result) {
-                    return res.status(200).json({
-                        message: "Help added",
-                        token: token
-                    })
-                }
-            })
-
-        } catch (e) {
-            return res.status(500).json({
-                error: e
-            })
+        if (!token) {
+            token = randomstring.generate(15);
+            console.log(token)
         }
-    })
+
+        const help = new Help({
+            _priority,
+            address,
+            description,
+            district,
+            name,
+            number,
+            request_type,
+            state,
+            token
+        })
+        help.save((err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    error: err
+                })
+            }
+            if (result) {
+                return res.status(200).json({
+                    message: "Help added",
+                    token: token
+                })
+            }
+        })
+
+    } catch (e) {
+        return res.status(500).json({
+            error: e
+        })
+    }
 }
+
+exports.fetchMyHelps = async(req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json({
+            status: 0,
+            message: "Incomplete Request Data",
+            errors: errors.array(),
+        });
+    }
+
+    try {
+        const token_list = req.body.token_list;
+        let splittedtoken = await token_list.split(",");
+        await splittedtoken.shift();
+        console.log(splittedtoken);
+        let promises = [];
+
+        splittedtoken.forEach(token => {
+
+            promises.push(new Promise((resolve) => Help.find({
+                'token': token
+            }, (err, result) => {
+                if (result) {
+                    resolve(result[0])
+                }
+            })));
+
+        });
+
+        Promise.all(promises)
+            .then(results => {
+                return res.status(200).json({ message: results });
+            }).catch(e => {
+                return res.status(500).json({ message: "Error", error: e });
+
+            });
+    } catch (e) {
+        return res.status(500).json({ message: "Error", error: e })
+    }
+}
+
+
 
 exports.fetchHelps = async(req, res) => {
     const errors = validationResult(req);
