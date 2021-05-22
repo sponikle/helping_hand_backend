@@ -226,7 +226,8 @@ exports.requestHelp = async(req, res) => {
                 }
                 if (result) {
                     return res.status(200).json({
-                        message: "Help added"
+                        message: "Help added",
+                        token: token
                     })
                 }
             })
@@ -575,7 +576,7 @@ exports.addInformation = (req, res) => {
             offeredState,
             offeredLink,
             offeredArea,
-            charagable,
+            chargable,
             serviceTime,
             contactPerson,
             contactNumber
@@ -625,7 +626,7 @@ exports.addInformation = (req, res) => {
                     offeredState,
                     offeredLink,
                     offeredArea,
-                    charagable,
+                    chargable,
                     serviceTime,
                     contactPerson,
                     contactNumber
