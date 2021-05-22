@@ -32,8 +32,7 @@ router.post('/requestHelp', [
     body('name').notEmpty().withMessage("name can not be empty"),
     body('number').notEmpty().withMessage("number can not be empty"),
     body('request_type').notEmpty().withMessage("request_type can not be empty"),
-    body('state').notEmpty().withMessage("state can not be empty"),
-    body('type').notEmpty().withMessage("type can not be empty")
+    body('state').notEmpty().withMessage("state can not be empty")
 ], controller.requestHelp);
 
 router.post('/fetchHelp', [
