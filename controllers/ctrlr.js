@@ -5,6 +5,8 @@ const Store = require('../models/stores');
 const Help = require('../models/help');
 const Service = require('../models/service');
 const State = require('../models/state');
+const Information = require('../models/information');
+
 
 const { setState, setDistrict } = require('../helpers/index');
 
@@ -543,6 +545,146 @@ exports.fetchService = (req, res) => {
     } catch (e) {
         return res.status(500).json({
             error: err
+        })
+    }
+}
+
+exports.addInformation = (req, res) => {
+    if (!req.body.infoType) {
+        return res.status(401).json({
+            message: "Can not procceed further, cat missing"
+        })
+    }
+    console.log(req.body.infoType);
+    try {
+        const {
+            infoType,
+            storeName,
+            storeType,
+            storeNumber,
+            storeArea,
+            storeDistrict,
+            storeLocation,
+            storeTime,
+            homedelivery,
+            pickup,
+            serviceType,
+            offerredBy,
+            offeredLocation,
+            offeredDistrict,
+            offeredState,
+            offeredLink,
+            offeredArea,
+            charagable,
+            serviceTime,
+            contactPerson,
+            contactNumber
+        } = req.body;
+
+        switch (req.body.infoType) {
+            case ("Store"):
+                console.log('Adding store information')
+
+                const information = new Information({
+                    infoType,
+                    storeName,
+                    storeType,
+                    storeNumber,
+                    storeArea,
+                    storeDistrict,
+                    storeLocation,
+                    storeTime,
+                    homedelivery,
+                    pickup
+                })
+
+                information.save((err, result) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error',
+                            error: err
+                        })
+                    }
+
+                    if (result) {
+                        return res.status(200).json({
+                            message: "Information Added"
+                        })
+                    }
+                })
+                break;
+
+            case ("Service"):
+                console.log("Adding service information");
+                const information2 = new Information({
+                    infoType,
+                    serviceType,
+                    offerredBy,
+                    offeredLocation,
+                    offeredDistrict,
+                    offeredState,
+                    offeredLink,
+                    offeredArea,
+                    charagable,
+                    serviceTime,
+                    contactPerson,
+                    contactNumber
+                });
+
+                information2.save((err, result) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error',
+                            error: err
+                        })
+                    }
+
+                    if (result) {
+                        return res.status(200).json({
+                            message: "Information Added"
+                        })
+                    }
+                })
+                break;
+        }
+    } catch (e) {
+        return res.status(500).json({
+            message: 'Error',
+            error: e
+        })
+    }
+}
+
+
+exports.getInformationEntries = (req, res) => {
+    const requestType = req.body.type;
+    if (!requestType) {
+        return res.status(401).json({
+            message: 'Error',
+            error: 'Entity Can not be processed'
+        })
+    }
+    try {
+
+        Information.find({ "infoType": requestType }, (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error',
+                    error: err
+                })
+            }
+
+            if (result) {
+                return res.status(200).json({
+                    message: result
+                })
+            }
+        })
+
+    } catch (e) {
+        return res.status(500).json({
+            message: 'Error',
+            error: e
         })
     }
 }

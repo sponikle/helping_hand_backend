@@ -66,6 +66,8 @@ router.post('/fetchService', [
     body('param').notEmpty().withMessage("param can not be empty")
 ], controller.fetchService);
 
+router.post('/addInformation', controller.addInformation);
+router.post('/getInformationEntries', controller.getInformationEntries);
 // router.post('/addSuggestions', [
 //     body('name').notEmpty().withMessage('Name can not be empty'),
 //     body('email').notEmpty().withMessage('email can not be empty'),
