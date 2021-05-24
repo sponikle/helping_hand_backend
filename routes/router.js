@@ -69,10 +69,10 @@ router.post('/fetchService', [
 
 router.post('/addInformation', controller.addInformation);
 router.post('/getInformationEntries', controller.getInformationEntries);
-// router.post('/addSuggestions', [
-//     body('name').notEmpty().withMessage('Name can not be empty'),
-//     body('email').notEmpty().withMessage('email can not be empty'),
-//     body('suggestion').notEmpty().withMessage('suggestion can not be empty')
-// ], controller.addSuggestion);
+router.post('/addSuggestion', [
+    body('name').notEmpty().withMessage('Name can not be empty'),
+    body('email').notEmpty().withMessage('email can not be empty'),
+    body('suggestion').notEmpty().withMessage('suggestion can not be empty')
+], controller.addSuggestion);
 
 module.exports = router;

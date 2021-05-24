@@ -7,7 +7,7 @@ const Help = require('../models/help');
 const Service = require('../models/service');
 const State = require('../models/state');
 const Information = require('../models/information');
-
+const Suggestions = require('../models/suggestion');
 
 const { setState, setDistrict } = require('../helpers/index');
 
@@ -735,5 +735,44 @@ exports.getInformationEntries = (req, res) => {
             message: 'Error',
             error: e
         })
+    }
+}
+
+exports.addSuggestion = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json({
+            status: 0,
+            message: "Incomplete Request Data",
+            errors: errors.array(),
+        });
+    }
+    try {
+        const email = req.body.email;
+        const name = req.body.name;
+        const suggestion = req.body.suggestion;
+
+        const sug = new Suggestions({
+            email,
+            name,
+            suggestion
+        });
+        sug.save((error, result) => {
+            if (error) {
+                return res.status(500).json({
+                    message: "Error",
+                    error: error
+                });
+            }
+
+            if (result) {
+                return res.status(200).json({
+                    message: "Success",
+                });
+            }
+        })
+
+    } catch (e) {
+        return res.status(500).json({ message: "Error", error: e })
     }
 }
