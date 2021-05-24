@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { validationResult } = require("express-validator");
 const randomstring = require("randomstring");
 
@@ -254,22 +255,25 @@ exports.fetchMyHelps = async(req, res) => {
         await splittedtoken.shift();
         console.log(splittedtoken);
         let promises = [];
-
+        let helplist = [];
         splittedtoken.forEach(token => {
 
-            promises.push(new Promise((resolve) => Help.find({
+            promises.push(new Promise((resolve, reject) => Help.find({
                 'token': token
             }, (err, result) => {
-                if (result) {
+                if (result.length != 0) {
                     resolve(result[0])
                 }
+                resolve({})
             })));
 
         });
 
         Promise.all(promises)
             .then(results => {
-                return res.status(200).json({ message: results });
+                var newarray = results.filter((item) => Object.keys(item).length !== 0);
+                console.log(results);
+                return res.status(200).json({ message: newarray });
             }).catch(e => {
                 return res.status(500).json({ message: "Error", error: e });
 
@@ -405,6 +409,7 @@ exports.fetchHelpsById = (req, res) => {
             }
         });
     } catch (e) {
+        return res.status(200).json({ message: "Error", Error: e })
 
     }
 }
@@ -444,7 +449,7 @@ exports.addCommentToHelp = (req, res) => {
             }
         })
     } catch (e) {
-
+        return res.status(500).json({ message: "Error", error: e })
     }
 }
 
@@ -586,7 +591,7 @@ exports.fetchService = (req, res) => {
         }
     } catch (e) {
         return res.status(500).json({
-            error: err
+            error: e
         })
     }
 }
@@ -627,6 +632,7 @@ exports.addInformation = (req, res) => {
             case ("Store"):
                 console.log('Adding store information')
 
+                // eslint-disable-next-line no-case-declarations
                 const information = new Information({
                     infoType,
                     storeName,
@@ -658,6 +664,7 @@ exports.addInformation = (req, res) => {
 
             case ("Service"):
                 console.log("Adding service information");
+                // eslint-disable-next-line no-case-declarations
                 const information2 = new Information({
                     infoType,
                     serviceType,
