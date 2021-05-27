@@ -5,8 +5,8 @@ const app = express();
 const mongoose = require('mongoose');
 const { PORT } = require('./config/index');
 
-mongoose.connect('mongodb://127.0.0.1:27017/helpinghand', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((success) => {
+mongoose.connect('mongodb://127.0.0.1:27017/helpinghand_prod', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
         console.log(
             'Database connected'
         );
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     })
 })
 
-const port = PORT || process.env.PORT;
+const port = PORT;
 
 app.listen(port, () => {
     console.log('App has been started', port)
